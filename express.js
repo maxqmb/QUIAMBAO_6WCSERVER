@@ -4,10 +4,12 @@ WD-302
 */
 import express from 'express';
 import path from 'path';
+import bodyParser from 'body-parser';
 const __dirname = import.meta.dirname;
 
 const app = express();
 app.use(express.static('public'));
+const urlEncoderParser = bodyParser.urlEncoderParser({extended: false});
 
 /*PAGE ROUTES*/
 
@@ -44,7 +46,7 @@ app.get('/getStudent', (req, res) => {
   res.json(response);
 });
 
-app.get('/getAdmin', (req, res) => {
+app.post('/postAdmin', urlEncoderParser, (req, res) => {
   const { adminID, firstName, lastName, department } = req.query;
   if (!adminID) {
     return res.status(400).send('Admin ID is required');
