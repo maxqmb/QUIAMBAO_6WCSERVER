@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-image: url('hau.jpg');
+        background-size: cover; 
+        background-repeat: no-repeat;
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+    }
+    .container {
+        background: rgba(255, 255, 255, 0.3);
+        max-width: 650px;
+        margin: 50px auto;
+        padding: 90px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        backdrop-filter: blur(10px);
+    }
+    h1 {
+        color: #000;
+        margin-bottom: 15px;
+        font-size: 2.2rem;
+        font-weight: 600;
+    }
+    p {
+        color: #000;
+        margin-bottom: 35px;
+        font-size: 1.1rem;
+    }
+    .button-container {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    a {
+        display: inline-block;
+        padding: 15px 30px;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        min-width: 140px;
+    }
+    .student-btn {
+        background-color: #700e1c;
+    }
+    .student-btn:hover {
+        background: linear-gradient(45deg, #700e1c, #FFFF);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+    }
+    .admin-btn {
+        background-color: #700e1c;
+    }
+    .admin-btn:hover {
+        background: linear-gradient(45deg, #700e1c, #fdd835);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(250, 112, 154, 0.4);
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Home</h1>
+        <p>Welcome! Choose your portal to get started</p>
+        <div class="button-container">
+            <a href="studentForm.html" class="student-btn">Student Form</a>
+            <a href="adminForm.html" class="admin-btn">Admin Form</a>
+        </div>
+    </div>
+</body>
+</html>
