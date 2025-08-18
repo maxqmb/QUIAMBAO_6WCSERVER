@@ -3,9 +3,22 @@ Quiambao, Maxene P
 WD-302
 */
 import express from 'express';
+import multer from 'multer';
 import path from 'path';
 import bodyParser from 'body-parser';
 const __dirname = import.meta.dirname;
+
+var storage = multer.diskStorage({
+  destination: (req, file, callback ) => {
+    callback(null, 'uploads/');
+  },
+  filename: (req, file, callback) => {
+    callback(null, file.originalname);
+  }
+});
+
+var upload = multer({storage: stograe }) .single('file'); 
+
 
 const app = express();
 app.use(express.static('public'));
@@ -18,6 +31,14 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
 
+app.post('/uploads', (res, req) => {
+  upload(req, res, (err) => {
+    if (err) return res.end('Error uploading file');
+    else {
+      res.end('File uploaded succesful')
+    }
+  })
+})
 app.get('/studentForm', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'studentForm.html'));
 });
