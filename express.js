@@ -6,50 +6,42 @@ import express from 'express';
 import multer from 'multer';
 import path from 'path';
 import bodyParser from 'body-parser';
-const __dirname = import.meta.dirname;
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-var storage = multer.diskStorage({
-  destination: (req, file, callback ) => {
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const app = express();
+
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
     callback(null, 'uploads/');
   },
   filename: (req, file, callback) => {
     callback(null, file.originalname);
   }
 });
+const upload = multer({ storage: storage }).fields([{ name: 'file', maxCount: 1 }]);
 
-var upload = multer({storage: stograe }) .single('file'); 
-
-
-const app = express();
 app.use(express.static('public'));
-const urlEncoderParser = bodyParser.urlEncoderParser({extended: false});
+app.use(bodyParser.urlencoded({ extended: false }));
 
-/*PAGE ROUTES*/
-
-/* MAXENE */ 
+/* PAGE ROUTES */
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'home.html'));
-});
-
-app.post('/uploads', (res, req) => {
-  upload(req, res, (err) => {
-    if (err) return res.end('Error uploading file');
-    else {
-      res.end('File uploaded succesful')
-    }
-  })
-})
-app.get('/studentForm', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'studentForm.html'));
 });
 
 app.get('/adminForm', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'adminForm.html'));
 });
 
-/*API ROUTES*/
+app.get('/studentForm', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'studentForm.html'));
+});
+
+/* API ROUTES */
 app.get('/getHome', (req, res) => {
-  const response = { 
+  const response = {
     systemName: 'Student Management System',
     status: 'active',
     message: 'Welcome! Choose your portal to get started'
@@ -68,15 +60,29 @@ app.get('/getStudent', (req, res) => {
   res.json(response);
 });
 
-app.post('/postAdmin', urlEncoderParser, (req, res) => {
-  const { adminID, firstName, lastName, department } = req.query;
-  if (!adminID) {
-    return res.status(400).send('Admin ID is required');
-  }
-  const response = { adminID, firstName, lastName, department };
-  console.log("Admin Data:", response);
-  res.json(response);
+
+app.post('/postAdmin', (req, res) => {
+  upload(req, res, (err) => {
+    if (err) return res.status(400).send('Error uploading file');
+
+    const { adminID, firstName, lastName, department, username } = req.body;
+
+    if (!adminID) {
+      return res.status(400).send('Admin ID is required');
+    }
+
+    console.log("Admin Data:", { adminID, firstName, lastName, department, username });
+
+    if (req.files && req.files['file']) {
+      console.log('Uploaded file:', req.files['file'][0].path);
+    } else {
+      console.log('No file uploaded');
+    }
+
+    res.send('File and form data uploaded successfully');
+  });
 });
+
 
 const server = app.listen(5000, () => {
   console.log(`Server running at http://localhost:5000`);
